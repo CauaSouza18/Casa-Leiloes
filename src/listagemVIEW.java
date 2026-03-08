@@ -1,7 +1,7 @@
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.JOptionPane;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -136,17 +136,28 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+      int linha = listaProdutos.getSelectedRow();
+    
+    // Verificamos se alguma linha foi realmente selecionada
+    if (linha >= 0) {
+        // 2. Pega o ID que está na primeira coluna (índice 0) da linha selecionada
+        String idString = listaProdutos.getValueAt(linha, 0).toString();
+        int id = Integer.parseInt(idString);
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
+        // 3. Chama o DAO para atualizar o status para "Vendido" no banco
+        ProdutosDAO dao = new ProdutosDAO();
+        dao.venderProduto(id);
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+        // 4. Recarrega a tabela para mostrar o status atualizado
+        listarProdutos(); 
+    } else {
+        // Caso o usuário clique no botão sem selecionar nada na tabela
+        JOptionPane.showMessageDialog(null, "Por favor, selecione um produto na tabela primeiro!");
     }//GEN-LAST:event_btnVenderActionPerformed
+    }
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+      
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -222,4 +233,8 @@ public class listagemVIEW extends javax.swing.JFrame {
         }
     
     }
+    
+  
+    }
+}
 }
